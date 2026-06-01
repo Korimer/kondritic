@@ -1,7 +1,6 @@
 {
   inputs = {
     flake-parts.url = "github:hercules-ci/flake-parts";
-    kondritic.url = "github:Korimer/kondritic";
     nixpkgs.url = "github:NixOS/nixpkgs";
   };
 

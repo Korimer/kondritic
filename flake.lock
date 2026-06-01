@@ -18,6 +18,21 @@
         "type": "github"
       }
     },
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1780344909,
+        "narHash": "sha256-6itotsxdob1xql6eRj0x5FOI8j/WwmNKunT9Csr7SaE=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "5a5c2a6616694413c3d3179ecbf5a13f1ae6b62c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "nixpkgs-lib": {
       "locked": {
         "lastModified": 1777168982,
@@ -35,7 +50,8 @@
     },
     "root": {
       "inputs": {
-        "flake-parts": "flake-parts"
+        "flake-parts": "flake-parts",
+        "nixpkgs": "nixpkgs"
       }
     }
   },
