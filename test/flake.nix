@@ -1,14 +1,14 @@
 {
   inputs = {
     flake-parts.url = "github:hercules-ci/flake-parts";
-    kondritic.url = "github:Korimer/kondritic";
+    kondritic.url = "git+file:../";
     nixpkgs.url = "github:NixOS/nixpkgs";
   };
 
   outputs = inputs@{ ... }: {
     nixosConfigurations.fortnite = inputs.nixpkgs.lib.nixosSystem {
       modules = [
-        ({ ... }: { nixpkgs.hostPlatform = "x86_64-linux"; } )
+        ({ ... }: { nixpkgs.hostPlatform = inputs.kondritic.with-kontext {}; } )
         ./configuration.nix
       ];
     };

@@ -42,17 +42,16 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1780345827,
-        "narHash": "sha256-vZJd5C2bsmHPZWKTwXEYMnGb4Rwyeeex7vdr5+ltSX4=",
-        "owner": "Korimer",
-        "repo": "kondritic",
-        "rev": "91a4b2ec696d6665ba38e2ef715828a51715d2f0",
-        "type": "github"
+        "dirtyRev": "0da911c7337d37c9fdb2caf1e1752f78e7b20e11-dirty",
+        "dirtyShortRev": "0da911c-dirty",
+        "lastModified": 1780436884,
+        "narHash": "sha256-Os412zMEEKVrhOzS5C+i/oyyiLEfH664GFX0LxkujvI=",
+        "type": "git",
+        "url": "file:../"
       },
       "original": {
-        "owner": "Korimer",
-        "repo": "kondritic",
-        "type": "github"
+        "type": "git",
+        "url": "file:../"
       }
     },
     "nixpkgs": {
