@@ -6,8 +6,11 @@
   };
 
   outputs = inputs@{ ... }: {
-    nixosConfigurations.fortnite = inputs.nixpkgs.nixosSystem {
-      modules = [];
+    nixosConfigurations.fortnite = inputs.nixpkgs.lib.nixosSystem {
+      modules = [
+        ({ ... }: { inputs.nixpkgs.hostPlatform = "x86_64linux"; } )
+        ./configuration.nix
+      ];
     };
   };
 }
