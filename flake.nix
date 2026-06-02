@@ -5,8 +5,6 @@
   };
 
   outputs = inputs@{ ... }: {
-    nixosConfigurations.fortnite = inputs.nixpkgs.nixosSystem {
-      modules = [];
-    };
+    with-kontext = (import ./kondritic.nix);
   };
 }
