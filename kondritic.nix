@@ -1,1 +1,4 @@
-{ ... }: "x86_64-linux"
+args: module:
+  args.nixpkgs.lib.mapAttrs
+  (val: val)
+  (module args)

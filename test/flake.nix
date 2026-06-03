@@ -8,8 +8,7 @@
   outputs = inputs@{ ... }: {
     nixosConfigurations.fortnite = inputs.nixpkgs.lib.nixosSystem {
       modules = [
-        ({ ... }: { nixpkgs.hostPlatform = inputs.kondritic.with-kontext {}; } )
-        ./configuration.nix
+        ({ ... }: (inputs.kondritic.with-kontext inputs) ((import ./configuration.nix) {}) )
       ];
     };
   };
