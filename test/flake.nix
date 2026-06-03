@@ -8,7 +8,7 @@
   outputs = inputs@{ ... }: {
     nixosConfigurations.fortnite = inputs.nixpkgs.lib.nixosSystem {
       modules = [
-        ({ ... }: (inputs.kondritic.with-kontext inputs) ((import ./configuration.nix) {}) )
+        ({ ... }: inputs.kondritic.with-kontext inputs ((import ./configuration.nix) {}) )
       ];
     };
   };
