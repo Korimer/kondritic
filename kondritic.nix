@@ -33,6 +33,9 @@ args: module: config:
     ;
   in
   args.nixpkgs.lib.listToAttrs
-  (map (name:
-    {name = name; value = mkHost args.nixpkgs name lol;}
-  ))
+  (map
+    (hostname:
+      {name = hostname; value = mkHost args.nixpkgs hostname lol;}
+    )
+    hosts
+  )
