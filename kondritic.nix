@@ -26,6 +26,27 @@ let
       (inputs.home-manager.lib.homeManagerConfiguration
         { modules = options; }
       );
+
+    _pathToAttrs = escapedPath:
+      let
+        match = builtins.match "([^/]+)/(.*)";
+      in
+        if match == null then
+          {}
+        else
+          {
+            ${builtins.head match} =
+              konlib._pathToAttrs (builtins.tail match);
+          }
+      ;
+
+    pathToAttrs = path:
+      konlib._pathToAttrs (
+        builtins.replaceStrings [ "." ] [ "_" ]
+      (inputs.nixpkgs.lib.strings.removeSuffix ".nix" path)
+      )
+    ;
+      
   };
 
   hosts = config.hosts;
@@ -60,6 +81,7 @@ let
     kon-out = 
       configsFinal
       // { kon.options.nixos = allNixOptions; }
+      // { kon.lib = konlib; }
     ;
 
   in kon-out
