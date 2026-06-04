@@ -23,9 +23,11 @@ args: module: config:
       hosts
     ;
 
-    configsFinal = args.nixpkgs.lib.listToAttrs allNixConfigs;
+    configsFinal = { nixosConfigurations = args.nixpkgs.lib.listToAttrs allNixConfigs; };
 
-    kon-out = configsFinal // lol;
+    kon-out = 
+      configsFinal
+      // { kon.nix = lol; };
 
   in kon-out
 
