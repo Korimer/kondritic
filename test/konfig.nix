@@ -1,3 +1,4 @@
 {
-  hosts = [ "fortnite" ];
+  hosts = [ "fortnite" "magic" "netzach" ];
+  users = [ "korimer" ];
 }

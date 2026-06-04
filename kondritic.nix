@@ -1,34 +1,56 @@
 let 
-  mkHost = nixpkgs: options:
-    (nixpkgs.lib.nixosSystem
-      { modules = [ options ]; }
-    );
+  # directory reading
+  importDir = lib: directory: lib.flatten (
+    lib.pipe directory [
+      builtins.readDir
+      (lib.filterAttrs (name: type: type == "directory" || lib.hasSuffix ".nix" name))
+      (lib.filterAttrs (name: _: !(lib.hasPrefix "_" name)))
+      (lib.mapAttrsToList (
+        name: type: if type == "directory"
+          then importDir (directory + ("/" + name))
+          else directory + ("/" + name)
+      ))
+    ]
+  );
 in
 
-args: module: config:
-  let
-    hosts = config.hosts;
+inputs: module: config:
+let
+  konlib = {
+    mkHost = options:
+      (inputs.nixpkgs.lib.nixosSystem
+        { modules = options; }
+      );
 
-    options = {
-      #nixos = (builtins.getFlake (toString ./.)).nixosConfigurations.<hostname>.options;
-      #home = (builtins.getFlake (builtins.toString ./.)).nixosConfigurations.<name>.options.home-manager.users.type.getSubOptions []    };
+    mkUser = options:
+      (inputs.home-manager.lib.homeManagerConfiguration
+        { modules = options; }
+      );
+  };
+
+  hosts = config.hosts;
+  users = config.users;
+
+  options = {
+    #nixos = (builtins.getFlake (toString ./.)).nixosConfigurations.<hostname>.options;
+    #home = (builtins.getFlake (builtins.toString ./.)).nixosConfigurations.<name>.options.home-manager.users.type.getSubOptions []    };
     };
 
-    lol = args.nixpkgs.lib.mapAttrs'
+    lol = inputs.nixpkgs.lib.mapAttrs'
       (key: val: {name = key; value = val;})
       (module {})
     ;
 
     nixConfigArr = map
       (hostname:
-        {name = hostname; value = mkHost args.nixpkgs lol;}
+        {name = hostname; value = konlib.mkHost inputs.nixpkgs [lol];}
       )
       hosts
     ;
 
-    allNixConfigs = args.nixpkgs.lib.listToAttrs nixConfigArr;
+    allNixConfigs = inputs.nixpkgs.lib.listToAttrs nixConfigArr;
     
-    allNixOptions = args.nixpkgs.lib.mapAttrs
+    allNixOptions = inputs.nixpkgs.lib.mapAttrs
       (key: val: val.options )
       allNixConfigs
     ;
