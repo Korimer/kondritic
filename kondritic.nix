@@ -11,31 +11,21 @@ args: module: config:
       #home = (builtins.getFlake (builtins.toString ./.)).nixosConfigurations.<name>.options.home-manager.users.type.getSubOptions []    };
     };
 
-    nixosfinal = { inputs, ... }: inputs.nixpkgs.lib.nixosSystem options.nixos;
-
-    homefinal = {};
-    optionsfinal = {
-      den._internal.options = {
-        nixos = nixosfinal.options;
-        home = nixosfinal.options.home-manager.users.type.getSubOptions [];
-      };
-    };
-
-    kon-out = 
-      nixosfinal
-      // homefinal
-      // optionsfinal
-    ;
-
     lol = args.nixpkgs.lib.mapAttrs'
       (key: val: {name = key; value = val;})
       (module {})
     ;
-  in
-  args.nixpkgs.lib.listToAttrs
-  (map
-    (hostname:
-      {name = hostname; value = mkHost args.nixpkgs hostname lol;}
-    )
-    hosts
-  )
+
+    allNixConfigs = map
+      (hostname:
+        {name = hostname; value = mkHost args.nixpkgs hostname lol;}
+      )
+      hosts
+    ;
+
+    configsFinal = args.nixpkgs.listToAttrs allNixConfigs;
+
+    kon-out = configsFinal // lol;
+
+  in kon-out
+
