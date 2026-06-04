@@ -1,9 +1,8 @@
 let 
-  mkHost = nixpkgs: hostname: options:
-  {
-    ${hostname} =
-      (nixpkgs.lib.nixosSystem { modules = [ options ]; });
-  };
+  mkHost = nixpkgs: options:
+    (nixpkgs.lib.nixosSystem
+      { modules = [ options ]; }
+    );
 in
 
 args: module: config:
