@@ -19,18 +19,26 @@ args: module: config:
       (module {})
     ;
 
-    allNixConfigs = map
+    nixConfigArr = map
       (hostname:
         {name = hostname; value = mkHost args.nixpkgs lol;}
       )
       hosts
     ;
 
-    configsFinal = { nixosConfigurations = args.nixpkgs.lib.listToAttrs allNixConfigs; };
+    allNixConfigs = args.nixpkgs.listToAttrs nixConfigArr;
+    
+    allNixOptions = args.nixpkgs.lib.mapAttrs
+      (key: val: val.options )
+      allNixConfigs
+    ;
+
+    configsFinal = { nixosConfigurations = allNixConfigs; };
 
     kon-out = 
       configsFinal
-      // { kon.nix = lol; };
+      // { kon.options.nixos = allNixOptions; }
+    ;
 
   in kon-out
 
