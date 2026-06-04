@@ -23,7 +23,7 @@ args: module: config:
       hosts
     ;
 
-    configsFinal = args.nixpkgs.listToAttrs allNixConfigs;
+    configsFinal = args.nixpkgs.lib.listToAttrs allNixConfigs;
 
     kon-out = configsFinal // lol;
 
