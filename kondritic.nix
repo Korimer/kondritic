@@ -11,26 +11,26 @@ let
         { modules = options; }
       );
 
-    _pathToAttrs = escapedPath:
-      let
-        match = builtins.match "([^/]+)/(.*)" escapedPath;
-      in
-        if match == null then
-          { ${escapedPath} = {}; }
-        else
-          {
-            ${builtins.elemAt match 0} =
-              konlib._pathToAttrs (builtins.elemAt match 1);
-          }
-      ;
+    pathToArr = escapedPath:
+        inputs.nixpkgs.lib.splitString "/" escapedPath;
+
+    arrToAttrs = arr:
+      if ((builtins.length arr) == 0)
+        then {}
+        else { ${builtins.head arr} = konlib.arrToAttrs (builtins.tail arr); }
+    ;
 
     pathToAttrs = path:
-      konlib._pathToAttrs (
-        builtins.replaceStrings [ "." ] [ "_" ]
-      (inputs.nixpkgs.lib.strings.removeSuffix ".nix" path)
-      )
+      let
+        files = path': konlib.pathToArr (
+          builtins.replaceStrings [ "." ] [ "_" ]
+          (inputs.nixpkgs.lib.strings.removeSuffix ".nix" path)
+        );
+      in
+      if (path == "")
+        then {}
+        else konlib.arrToAttrs (files path)
     ;
-      
   };
 
   with-kontext = { config, module }:
