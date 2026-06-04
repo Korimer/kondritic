@@ -26,7 +26,7 @@ args: module: config:
       hosts
     ;
 
-    allNixConfigs = args.nixpkgs.listToAttrs nixConfigArr;
+    allNixConfigs = args.nixpkgs.lib.listToAttrs nixConfigArr;
     
     allNixOptions = args.nixpkgs.lib.mapAttrs
       (key: val: val.options )
