@@ -21,7 +21,7 @@ args: module: config:
 
     allNixConfigs = map
       (hostname:
-        {name = hostname; value = mkHost args.nixpkgs hostname lol;}
+        {name = hostname; value = mkHost args.nixpkgs lol;}
       )
       hosts
     ;
